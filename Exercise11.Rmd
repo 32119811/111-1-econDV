@@ -68,9 +68,8 @@ data$衣著類$ppp指數="衣著類"
 data$居住類$ppp指數="居住類"
 data$總指數$ppp指數="總指數"
 dataAll = dplyr::bind_rows(
-  data$食物類, data$衣著類,data$居住類,data$總指數
-)
-
+  data$食物類, data$衣著類,data$居住類,data$總指數)
+  
 plot$dataAll = dataAll
 ```
 
