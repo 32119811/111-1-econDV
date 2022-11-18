@@ -1,0 +1,72 @@
+```{r}
+googlesheets4::gs4_deauth()
+googlesheets4::read_sheet(
+  "https://docs.google.com/spreadsheets/d/17NmkStyotvo0IjhWPxsAkgi3ECRsOtNHi1D45GTUlzI/edit?usp=sharing"
+) -> 消費者物價基本分類指數
+```
+```{r}
+Plot <- function(data) {
+  library(ggplot2)
+  plot = new.env()
+  plot$data=data
+  plot$ggplot=NULL
+  plot$geoms=NULL
+  plot$make=function(){
+    plot$ggplot+plot$geoms
+  }
+  plot$save=function(){
+    saveRDS(plot, filename)
+    message(paste("The plot is saved at ", filename))
+  }
+  return(plot)
+}
+
+```
+
+```{r}
+# Initialize plot object -----------
+plot=Plot(消費者物價基本分類指數)
+head(plot$data)
+```
+
+
+```{r}
+plot$ggplot=ggplot(data=plot$data)
+```
+
+```{r}
+plot$geoms = list(
+  geom_col(
+   mapping= aes(x=統計期, y=總指數),
+   linetype='solid', color='white'
+  )
+)
+
+# make the plot
+plot$make()
+```
+
+```{r}
+plot <- list()
+
+plot$p1 <- {
+  ggplot(
+    mapping=aes(
+      x=統計期,
+      y=y
+    ))+
+  geom_line(
+    data = ` 消費者物價基本分類指數$` ,
+    color="#096fa1",
+  )+
+  geom_line(
+    data=`消費者物價基本分類指數$二.衣著類`,
+    color="#ad8c97",
+  )+
+  geom_line(
+    data=`消費者物價基本分類指數$三.居住類`,
+    color = "#983d4d",
+  )
+}
+```
+
