@@ -83,6 +83,16 @@ plot$geoms = list(
     mapping=aes(color=ppp指數)
   )
 )
-plot$ggplot+plot$geoms
+
+plot$explain = list(
+  labs(
+    title="台灣消費者物價指數變化",
+    subtitle="2022年",
+    caption="資料來源:中華民國統計資訊網"
+  ),xlab(NULL)
+  )
+
+
+plot$ggplot+plot$geoms+plot$explain
 ```
 
