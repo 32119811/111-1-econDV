@@ -1,0 +1,80 @@
+```{r}
+googlesheets4::gs4_deauth()
+googlesheets4::read_sheet(
+  "https://docs.google.com/spreadsheets/d/1N6HBFe7_pNEiwgAdT5gWH86ytMx0-kYOXZZ29QHt4O0/edit?usp=sharing"
+) -> 新北扶幼比
+```
+
+```{r}
+plot=Plot(新北扶幼比)
+head(plot$data)
+```
+
+```{r}
+plot$ggplot=ggplot(data=plot$data)
+```
+
+```{r}
+date = 新北扶幼比$年
+data = list()
+data$新北市 <- 
+  data.frame(
+    date = date,
+    y = 新北扶幼比$新北市
+  )
+data$板橋區 <- 
+  data.frame(
+    date = date,
+    y = 新北扶幼比$板橋區
+  )
+data$樹林區 <- 
+  data.frame(
+    date = date,
+    y = 新北扶幼比$樹林區
+  )
+
+data$鶯歌區 <- 
+  data.frame(
+    date = date,
+    y = 新北扶幼比$鶯歌區
+  )
+
+
+plot = Plot(data=date)
+
+```
+
+```{r}
+data$出生人數$幼齡指標="出生人數"
+data$托嬰中心收托人數$幼齡指標="托嬰中心收托人數"
+
+dataAll = dplyr::bind_rows(
+data$出生人數,data$托嬰中心收托人數)
+  
+plot$dataAll = dataAll
+```
+
+```{r}
+library(ggplot2)
+plot$ggplot = ggplot(data=plot$dataAll,mapping=aes(
+  x=date, y=y
+))
+plot$geoms = list(
+  geom_line(
+    mapping=aes(color=幼齡指標),
+    size=2
+  )
+)
+
+plot$explain = list(
+  labs(
+    title="台灣消費者物價指數變化",
+    subtitle="2022年",
+    caption="資料來源:中華民國統計資訊網"
+  ),xlab(NULL)
+  )
+
+
+plot$ggplot+plot$geoms+plot$explain
+```
+
