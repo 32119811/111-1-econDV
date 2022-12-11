@@ -45,11 +45,13 @@ plot = Plot(data=date)
 ```
 
 ```{r}
-data$出生人數$幼齡指標="出生人數"
-data$托嬰中心收托人數$幼齡指標="托嬰中心收托人數"
+data$新北市$扶幼比 = "新北市"
+data$板橋區$扶幼比 = "板橋區"
+data$樹林區$扶幼比 = "樹林區"
+data$鶯歌區$扶幼比 = "鶯歌區"
 
 dataAll = dplyr::bind_rows(
-data$出生人數,data$托嬰中心收托人數)
+data$新北市,data$板橋區,data$樹林區,data$鶯歌區)
   
 plot$dataAll = dataAll
 ```
@@ -61,15 +63,15 @@ plot$ggplot = ggplot(data=plot$dataAll,mapping=aes(
 ))
 plot$geoms = list(
   geom_line(
-    mapping=aes(color=幼齡指標),
-    size=2
+    mapping=aes(color=扶幼比),
+    size=2.5
   )
 )
 
 plot$explain = list(
   labs(
-    title="台灣消費者物價指數變化",
-    subtitle="2022年",
+    title="新北市各區扶幼比變化",
+    subtitle="扶幼比=(0-14歲人口)/(15-64歲人口)*100",
     caption="資料來源:中華民國統計資訊網"
   ),xlab(NULL)
   )
