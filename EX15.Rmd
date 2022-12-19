@@ -1,0 +1,19 @@
+```{r}
+data <- data.frame(
+  系所 = c("經濟學系","社會學系","社會工作學系"),
+  專業課程開課學分數 = c(32,62,16,54,36,47),
+  類別 = c("專業必修","專業選修")
+)
+```
+
+```{r}
+p <- ggplot(data=data,aes(x = 系所 , y = 專業課程開課學分數 , fill = 類別))+
+  geom_bar(stat = "identity", position = position_dodge())+
+  labs(title="台北大學社科院開課狀況",
+  subtitle = "109學年",
+  caption = "資料來源:大專校院校務資訊公開平台")
+
+p
+```
+
+
