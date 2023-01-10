@@ -1,0 +1,95 @@
+```{r}
+googlesheets4::gs4_deauth()
+googlesheets4::read_sheet(
+  "https://docs.google.com/spreadsheets/d/1Aw6b_fVRFB22Zu0D1wyvNhrVYjemjTAAe2mKzdyUBIw/edit?usp=sharing"
+) -> 消費者物價基本分類指數
+```
+```{r}
+Plot <- function(data) {
+  library(ggplot2)
+  plot = new.env()
+  plot$data=data
+  plot$ggplot=NULL
+  plot$geoms=NULL
+  plot$make=function(){
+    plot$ggplot+plot$geoms
+  }
+  plot$save=function(){
+    saveRDS(plot, filename)
+    message(paste("The plot is saved at ", filename))
+  }
+  return(plot)
+}
+
+```
+
+```{r}
+plot=Plot(消費者物價基本分類指數)
+head(plot$data)
+```
+
+```{r}
+plot$ggplot=ggplot(data=plot$data)
+```
+
+```{r}
+date = 消費者物價基本分類指數$統計期
+data = list()
+data$食物類 <- 
+  data.frame(
+    date = date,
+    y = 消費者物價基本分類指數$一.食物類
+  )
+data$衣著類 <- 
+  data.frame(
+    date = date,
+    y = 消費者物價基本分類指數$二.衣著類
+  )
+data$居住類 <- 
+  data.frame(
+    date = date,
+    y = 消費者物價基本分類指數$三.居住類
+  )
+data$總指數 <- 
+  data.frame(
+    date = date,
+    y = 消費者物價基本分類指數$總指數
+  )
+
+plot = Plot(data=date)
+
+```
+
+```{r}
+data$食物類$ppp指數="食物類"
+data$衣著類$ppp指數="衣著類"
+data$居住類$ppp指數="居住類"
+data$總指數$ppp指數="總指數"
+dataAll = dplyr::bind_rows(
+  data$食物類, data$衣著類,data$居住類,data$總指數)
+  
+plot$dataAll = dataAll
+```
+
+```{r}
+library(ggplot2)
+plot$ggplot = ggplot(data=plot$dataAll,mapping=aes(
+  x=date, y=y
+))
+plot$geoms = list(
+  geom_line(
+    mapping=aes(color=ppp指數),size=2
+  )
+)
+
+plot$explain = list(
+  labs(
+    title="台灣消費者物價指數變化",
+    subtitle="以2016年為基期",
+    caption="資料來源:中華民國統計資訊網"
+  ),xlab(NULL)
+  )
+
+
+plot$ggplot+plot$geoms+plot$explain
+```
